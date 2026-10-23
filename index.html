@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PC ZONE PRO | Cloud Phone</title>
+
+<style>
+:root {
+  --red: #ff1744;
+  --bg: #090a0f;
+  --panel: #14151d;
+  --text: #f5f5f5;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Arial, sans-serif;
+}
+
+header {
+  background: #101016;
+  border-bottom: 2px solid var(--red);
+  padding: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.logo {
+  font-size: 23px;
+  font-weight: bold;
+  color: var(--red);
+}
+
+button {
+  background: var(--red);
+  color: white;
+  border: none;
+  padding: 11px 15px;
+  border-radius: 7px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+button:hover {
+  filter: brightness(1.15);
+}
+
+input, textarea, select {
+  width: 100%;
+  padding: 12px;
+  margin: 6px 0 12px;
+  background: #090a0f;
+  color: white;
+  border: 1px solid #393944;
+  border-radius: 7px;
+}
+
+.container {
+  max-width: 1100px;
+  margin: auto;
+  padding: 20px;
+}
+
+.hero {
+  padding: 35px 20px;
+  text-align: center;
+  border: 1px solid #29202a;
+  border-radius: 15px;
+  background: linear-gradient(135deg, #240711, #101016 65%);
+  margin-bottom: 25px;
+}
+
+.hero h1 {
+  font-size: 32px;
+  color: var(--red);
+}
+
+.hero p {
+  color: #c8c8d0;
+  line-height: 1.7;
+}
+
+.section-title {
+  border-left: 4px solid var(--red);
+  padding-left: 12px;
+  margin: 25px 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 17px;
+}
+
+.card, .panel {
+  background: var(--panel);
+  border: 1px solid #292933;
+  border-radius: 12px;
+  padding: 15px;
+}
+
+.card img {
+  width: 100%;
+  height: 155px;
+  object-fit: cover;
+  border-radius: 8px;
+  background: #222;
+}
+
+.price {
+  color: var(--red);
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.badge {
+  display: inline-block;
+  color: #83ffab;
+  background: #10271b;
+  border-radius: 5px;
+  padding: 5px 8px;
+  font-size: 12px;
+}
+
+.hidden {
+  display: none !important;
+}
+
+footer {
+  text-align: center;
+  color: #888;
+  padding: 25px;
+  margin-top: 35px;
+  border-top: 1px solid #292933;
+}
+
+label {
+  font-size: 14px;
+}
+
+.admin-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+
+.secondary {
+  background: #343440;
+}
+
+.danger {
+  background: #a30d28;
+}
+
+.notice {
+  background: #281b0b;
+  color: #ffd18a;
+  border: 1px solid #6c4817;
+  border-radius: 8px;
+  padding: 12px;
+  line-height: 1.6;
+  margin: 12px 0;
+}
+
+@media (max-width: 500px) {
+  .hero h1 {
+    font-size: 25px;
+  }
+  header {
+    padding: 13px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo" id="headerLogo">PC ZONE PRO</div>
+  <button onclick="showLogin()">⚙️ หลังบ้าน</button>
+</header>
+
+<main class="container">
+
+  <section class="hero">
+    <h1 id="heroTitle">PC ZONE PRO</h1>
+    <p id="heroText">
+      CLOUD PHONE RENTAL<br>
+      บริการเช่าเครื่อง Android สำหรับเกมเมอร์
+    </p>
+    <button onclick="scrollToProducts()">ดูแพ็กเกจเช่า</button>
+  </section>
+
+  <section id="productsSection">
+    <h2 class="section-title">📱 แพ็กเกจ Cloud Phone</h2>
+    <div id="productGrid" class="grid"></div>
+  </section>
+
+  <section class="panel" style="margin-top:25px">
+    <h3>💬 ติดต่อร้าน</h3>
+    <p id="contactText">ติดต่อสอบถามแพ็กเกจและรายละเอียดการเช่า</p>
+    <a id="contactLink" href="#" target="_blank"
+       style="color:#ff526e">ติดต่อ PC ZONE PRO</a>
+  </section>
+
+  <section id="loginSection" class="panel hidden"
+           style="margin-top:25px">
+    <h2>🔐 เข้าสู่ระบบหลังบ้าน</h2>
+    <p>เฉพาะผู้ดูแลเว็บไซต์</p>
+
+    <form id="loginForm">
+      <label for="adminPassword">รหัสผ่าน</label>
+      <input id="adminPassword" type="password"
+             placeholder="กรอกรหัสผ่าน" required>
+      <button type="submit">เข้าสู่ระบบ</button>
+      <button type="button" class="secondary"
+              onclick="hideLogin()">ยกเลิก</button>
+    </form>
+
+    <p id="loginMessage" role="status"></p>
+  </section>
+
+  <section id="adminSection" class="hidden">
+
+    <h2 class="section-title">👑 แผงควบคุมผู้ดูแล</h2>
+
+    <div class="notice">
+      ข้อมูลรุ่นนี้บันทึกไว้ในเบราว์เซอร์เครื่องนี้
+      ยังไม่ใช่ฐานข้อมูลส่วนกลางสำหรับลูกค้าหลายคน
+    </div>
+
+    <div class="panel">
+      <h3>🎨 ปรับแต่งหน้าร้าน</h3>
+
+      <label>ชื่อร้าน</label>
+      <input id="settingName" placeholder="PC ZONE PRO">
+
+      <label>หัวข้อหลัก</label>
+      <input id="settingTitle">
+
+      <label>ข้อความแนะนำร้าน</label>
+      <textarea id="settingText" rows="3"></textarea>
+
+      <label>ข้อความติดต่อ</label>
+      <input id="settingContact">
+
+      <label>ลิงก์ติดต่อ (URL)</label>
+      <input id="settingContactUrl"
+             placeholder="https://example.com">
+
+      <label>สีหลัก</label>
+      <input id="settingColor" type="color" value="#ff1744">
+
+      <button onclick="saveSettings()">บันทึกการปรับแต่ง</button>
+    </div>
+
+    <div class="panel" style="margin-top:18px">
+      <h3 id="formTitle">➕ เพิ่มแพ็กเกจ</h3>
+
+      <form id="productForm">
+        <input id="editId" type="hidden">
+
+        <label>ชื่อแพ็กเกจ</label>
+        <input id="productName" required
+               placeholder="เช่น Android Gaming">
+
+        <label>รายละเอียด</label>
+        <textarea id="productDescription" rows="3"
+                  placeholder="รายละเอียดเครื่องและบริการ"></textarea>
+
+        <label>ราคาเช่ารายชั่วโมง (บาท)</label>
+        <input id="productHour" type="number" min="0" required>
+
+        <label>ราคาเช่ารายวัน (บาท)</label>
+        <input id="productDay" type="number" min="0" required>
+
+        <label>ลิงก์รูปภาพ</label>
+        <input id="productImage" type="url"
+               placeholder="https://example.com/image.jpg">
+
+        <label>สถานะ</label>
+        <select id="productStatus">
+          <option value="available">พร้อมให้เช่า</option>
+          <option value="busy">กำลังให้บริการ</option>
+          <option value="offline">ปิดให้บริการ</option>
+        </select>
+
+        <button type="submit">บันทึกแพ็กเกจ</button>
+        <button type="button" class="secondary"
+                onclick="resetProductForm()">ล้างฟอร์ม</button>
+      </form>
+    </div>
+
+    <div class="panel" style="margin-top:18px">
+      <h3>📋 จัดการแพ็กเกจ</h3>
+      <div id="adminProducts"></div>
+    </div>
+
+    <div class="panel" style="margin-top:18px">
+      <h3>🛒 รายการคำขอเช่าในเบราว์เซอร์นี้</h3>
+      <div id="ordersList"></div>
+      <p style="color:#aaa;font-size:13px">
+        รายการนี้เป็นเพียงข้อมูลในเครื่อง
+        ไม่ใช่ระบบรับชำระเงินหรือคำสั่งซื้อส่วนกลาง
+      </p>
+    </div>
+
+    <button onclick="logoutAdmin()" style="margin-top:20px">
+      ออกจากระบบหลังบ้าน
+    </button>
+
+  </section>
+
+</main>
+
+<footer>
+  © <span id="year"></span> PC ZONE PRO
+  <br>Cloud Phone Rental
+</footer>
+
+<script>
+const $ = id => document.getElementById(id);
+
+const KEYS = {
+  products: "pczone_products_v1",
+  settings: "pczone_settings_v1",
+  orders: "pczone_orders_v1"
+};
+
+// รหัสนี้เป็นเพียงตัวอย่างสำหรับทดลองในเครื่อง
+// ห้ามใช้เป็นระบบรักษาความปลอดภัยของร้านที่เปิดออนไลน์จริง
+const DEMO_ADMIN_PASSWORD = "12";
+
+const defaultProducts = [
+  {
+    id: "demo-1",
+    name: "Cloud Phone Basic",
+    description: "แพ็กเกจเริ่มต้นสำหรับทดลองใช้บริการ",
+    hour: 10,
+    day: 100,
+    image: "",
+    status: "available"
+  },
+  {
+    id: "demo-2",
+    name: "Cloud Phone Gaming",
+    description: "แพ็กเกจสำหรับผู้ใช้ที่ต้องการทดลองบริการเกม",
+    hour: 20,
+    day: 180,
+    image: "",
+    status: "available"
+  }
+];
+
+const defaultSettings = {
+  name: "PC ZONE PRO",
+  title: "PC ZONE PRO",
+  text: "CLOUD PHONE RENTAL\nบริการเช่าเครื่อง Android สำหรับเกมเมอร์",
+  contact: "ติดต่อสอบถามแพ็กเกจและรายละเอียดการเช่า",
+  contactUrl: "",
+  color: "#ff1744"
+};
+
+function load(key, fallback) {
+  try {
+    const value = localStorage.getItem(key);
+    return value ? JSON.parse(value) : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+let products = load(KEYS.products, defaultProducts);
+let settings = load(KEYS.settings, defaultSettings);
+let orders = load(KEYS.orders, []);
+
+let adminLoggedIn = false;
+
+function persist() {
+  try {
+    localStorage.setItem(KEYS.products, JSON.stringify(products));
+    localStorage.setItem(KEYS.settings, JSON.stringify(settings));
+    localStorage.setItem(KEYS.orders, JSON.stringify(orders));
+    return true;
+  } catch {
+    alert("บันทึกข้อมูลไม่สำเร็จ พื้นที่จัดเก็บอาจเต็ม");
+    return false;
+  }
+}
+
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  })[char]);
+}
+
+function safeLink(value) {
+  try {
+    const url = new URL(value);
+    return ["https:", "http:"].includes(url.protocol)
+      ? url.href : "";
+  } catch {
+    return "";
+  }
+}
+
+function applySettings() {
+  $("headerLogo").textContent = settings.name;
+  $("heroTitle").textContent = settings.title;
+  $("heroText").textContent = settings.text;
+  $("contactText").textContent = settings.contact;
+  document.documentElement.style.setProperty("--red", settings.color);
+
+  const link = safeLink(settings.contactUrl);
+  $("contactLink").href = link || "#";
+  $("contactLink").style.display = link ? "inline" : "none";
+
+  $("settingName").value = settings.name;
+  $("settingTitle").value = settings.title;
+  $("settingText").value = settings.text;
+  $("settingContact").value = settings.contact;
+  $("settingContactUrl").value = settings.contactUrl;
+  $("settingColor").value = settings.color;
+}
+
+function statusText(status) {
+  if (status === "available") return "พร้อมให้เช่า";
+  if (status === "busy") return "กำลังให้บริการ";
+  return "ปิดให้บริการ";
+}
+
+function renderProducts() {
+  $("productGrid").innerHTML = products.map(p => {
+    const image = safeLink(p.image);
+    const available = p.status === "available";
+
+    return `
+      <article class="card">
+        ${image
+          ? `<img src="${escapeHTML(image)}"
+                   alt="${escapeHTML(p.name)}"
+                   loading="lazy">`
+          : `<div style="height:155px;display:grid;
+                        place-items:center;background:#20202a;
+                        border-radius:8px;font-size:45px">📱</div>`
+        }
+
+        <h3>${escapeHTML(p.name)}</h3>
+        <p>${escapeHTML(p.description)}</p>
+        <span class="badge">${statusText(p.status)}</span>
+
+        <p>รายชั่วโมง</p>
+        <div class="price">${Number(p.hour)} บาท</div>
+
+        <p>รายวัน</p>
+        <div class="price">${Number(p.day)} บาท</div>
+
+        <button style="margin-top:15px;width:100%"
+          ${available ? "" : "disabled"}
+          onclick="requestRental('${escapeHTML(p.id)}')">
+          ${available ? "ขอเช่าแพ็กเกจนี้" : "ยังไม่พร้อมให้เช่า"}
+        </button>
+      </article>
+    `;
+  }).join("") || "<p>ยังไม่มีแพ็กเกจให้บริการ</p>";
+}
+
+function requestRental(id) {
+  const p = products.find(item => item.id === id);
+  if (!p || p.status !== "available") {
+    alert("แพ็กเกจนี้ยังไม่พร้อมให้เช่า");
+    return;
+  }
+
+  const duration = prompt("ต้องการเช่ากี่ชั่วโมง?");
+  if (duration === null) return;
+
+  const hours = Number(duration);
+  if (!Number.isInteger(hours) || hours < 1 || hours > 720) {
+    alert("กรุณากรอกจำนวนชั่วโมงตั้งแต่ 1 ถึง 720");
+    return;
+  }
+
+  const order = {
+    id: Date.now().toString(),
+    productId: p.id,
+    productName: p.name,
+    hours,
+    total: hours * Number(p.hour),
+    status: "pending",
+    createdAt: new Date().toISOString()
+  };
+
+  orders.push(order);
+  persist();
+  renderOrders();
+
+  alert(
+    "สร้างคำขอเช่าในเบราว์เซอร์นี้แล้ว\n" +
+    "แพ็กเกจ: " + p.name + "\n" +
+    "ระยะเวลา: " + hours + " ชั่วโมง\n" +
+    "ยอดประเมิน: " + order.total + " บาท\n\n" +
+    "นี่ไม่ใช่การชำระเงิน และยังไม่ได้จัดสรรเครื่อง Android จริง"
+  );
+}
+
+function showLogin() {
+  $("loginSection").classList.remove("hidden");
+  $("adminPassword").value = "";
+  $("loginMessage").textContent = "";
+  $("loginSection").scrollIntoView({ behavior: "smooth" });
+}
+
+function hideLogin() {
+  $("loginSection").classList.add("hidden");
+}
+
+$("loginForm").addEventListener("submit", event => {
+  event.preventDefault();
+
+  if ($("adminPassword").value === DEMO_ADMIN_PASSWORD) {
+    adminLoggedIn = true;
+    $("adminSection").classList.remove("hidden");
+    hideLogin();
+    renderAdmin();
+    $("adminSection").scrollIntoView({ behavior: "smooth" });
+  } else {
+    $("loginMessage").textContent = "รหัสผ่านไม่ถูกต้อง";
+  }
+});
+
+function logoutAdmin() {
+  adminLoggedIn = false;
+  $("adminSection").classList.add("hidden");
+  resetProductForm();
+}
+
+function saveSettings() {
+  if (!adminLoggedIn) return;
+
+  const name = $("settingName").value.trim();
+  const title = $("settingTitle").value.trim();
+  const color = $("settingColor").value;
+
+  if (!name || !title) {
+    alert("กรุณากรอกชื่อร้านและหัวข้อหลัก");
+    return;
+  }
+
+  settings = {
+    name: name.slice(0, 80),
+    title: title.slice(0, 100),
+    text: $("settingText").value.slice(0, 1000),
+    contact: $("settingContact").value.slice(0, 300),
+    contactUrl: safeLink($("settingContactUrl").value),
+    color: /^#[0-9a-f]{6}$/i.test(color) ? color : "#ff1744"
+  };
+
+  if (persist()) {
+    applySettings();
+    alert("บันทึกการตั้งค่าแล้ว");
+  }
+}
+
+$("productForm").addEventListener("submit", event => {
+  event.preventDefault();
+  if (!adminLoggedIn) return;
+
+  const name = $("productName").value.trim();
+  const hour = Number($("productHour").value);
+  const day = Number($("productDay").value);
+
+  if (!name || !Number.isFinite(hour) || !Number.isFinite(day)
+      || hour < 0 || day < 0 || hour > 1000000 || day > 1000000) {
+    alert("กรุณาตรวจสอบชื่อแพ็กเกจและราคา");
+    return;
+  }
+
+  const editId = $("editId").value;
+
+  const item = {
+    id: editId || crypto.randomUUID(),
+    name: name.slice(0, 100),
+    description: $("productDescription").value.slice(0, 1000),
+    hour,
+    day,
+    image: safeLink($("productImage").value),
+    status: $("productStatus").value
+  };
+
+  if (editId) {
+    products = products.map(p => p.id === editId ? item : p);
+  } else {
+    products.push(item);
+  }
+
+  if (persist()) {
+    resetProductForm();
+    renderAdmin();
+    renderProducts();
+    alert("บันทึกแพ็กเกจแล้ว");
+  }
+});
+
+function editProduct(id) {
+  if (!adminLoggedIn) return;
+  const p = products.find(item => item.id === id);
+  if (!p) return;
+
+  $("editId").value = p.id;
+  $("productName").value = p.name;
+  $("productDescription").value = p.description;
+  $("productHour").value = p.hour;
+  $("productDay").value = p.day;
+  $("productImage").value = p.image;
+  $("productStatus").value = p.status;
+  $("formTitle").textContent = "✏️ แก้ไขแพ็กเกจ";
+
+  $("productForm").scrollIntoView({ behavior: "smooth" });
+}
+
+function deleteProduct(id) {
+  if (!adminLoggedIn) return;
+  if (!confirm("ต้องการลบแพ็กเกจนี้หรือไม่?")) return;
+
+  products = products.filter(p => p.id !== id);
+
+  if (persist()) {
+    renderAdmin();
+    renderProducts();
+  }
+}
+
+function resetProductForm() {
+  $("productForm").reset();
+  $("editId").value = "";
+  $("formTitle").textContent = "➕ เพิ่มแพ็กเกจ";
+}
+
+function renderAdmin() {
+  if (!adminLoggedIn) return;
+
+  $("adminProducts").innerHTML = products.map(p => `
+    <div class="card" style="margin:10px 0">
+      <strong>${escapeHTML(p.name)}</strong>
+      <p>${Number(p.hour)} บาท/ชั่วโมง · ${Number(p.day)} บาท/วัน</p>
+      <p>${statusText(p.status)}</p>
+      <div class="admin-actions">
+        <button onclick="editProduct('${escapeHTML(p.id)}')">
+          แก้ไข
+        </button>
+        <button class="danger"
+          onclick="deleteProduct('${escapeHTML(p.id)}')">
+          ลบ
+        </button>
+      </div>
+    </div>
+  `).join("") || "<p>ไม่มีแพ็กเกจ</p>";
+
+  renderOrders();
+}
+
+function renderOrders() {
+  $("ordersList").innerHTML = orders.map(o => `
+    <div class="card" style="margin:10px 0">
+      <strong>${escapeHTML(o.productName)}</strong>
+      <p>ระยะเวลา ${Number(o.hours)} ชั่วโมง</p>
+      <p>ยอดประเมิน ${Number(o.total)} บาท</p>
+      <p>สถานะ: ${escapeHTML(o.status)}</p>
+      <small>${escapeHTML(o.createdAt)}</small>
+      ${adminLoggedIn ? `
+        <div class="admin-actions">
+          <button class="secondary"
+            onclick="setOrderStatus('${escapeHTML(o.id)}','pending')">
+            รอตรวจสอบ
+          </button>
+          <button
+            onclick="setOrderStatus('${escapeHTML(o.id)}','approved')">
+            อนุมัติคำขอ
+          </button>
+          <button class="danger"
+            onclick="setOrderStatus('${escapeHTML(o.id)}','rejected')">
+            ปฏิเสธ
+          </button>
+        </div>
+      ` : ""}
+    </div>
+  `).join("") || "<p>ยังไม่มีคำขอเช่าในเบราว์เซอร์นี้</p>";
+}
+
+function setOrderStatus(id, status) {
+  if (!adminLoggedIn) return;
+  const order = orders.find(o => o.id === id);
+  if (!order) return;
+
+  order.status = status;
+
+  if (persist()) renderOrders();
+}
+
+function scrollToProducts() {
+  $("productsSection").scrollIntoView({ behavior: "smooth" });
+}
+
+$("year").textContent = new Date().getFullYear();
+
+applySettings();
+renderProducts();
+</script>
+
+</body>
+</html>
